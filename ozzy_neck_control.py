@@ -7,6 +7,14 @@ from utils import *
 import pyaudio
 import numpy as np
 
+def mover(posicao_atual, posicao_desejada, aceleracao):
+    # Calcula a diferença entre a posição desejada e a posição atual
+    delta_posicao = posicao_desejada - posicao_atual
+
+    # Calcula a nova posição usando a fórmula da cinemática
+    nova_posicao = posicao_atual +  delta_posicao*aceleracao
+    
+    return nova_posicao
 
 
 # Configurações do PyAudio
@@ -69,7 +77,7 @@ face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_fronta
 
 # Inicializar a captura de vídeo da webcam
 cap = cv2.VideoCapture(0)
-
+ 
 while True:
     # Ler um frame da captura de vídeo
     ret, frame = cap.read()
@@ -105,7 +113,7 @@ while True:
     print(angulos)
 
 
-    # Condição de saída do loop (pressione 'q' para sair)
+    # Condição de saída do loop(pressione 'q' para sair)
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break
 

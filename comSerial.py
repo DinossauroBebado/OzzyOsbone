@@ -46,6 +46,16 @@ def cordenadas(angulos, booleanos, array):
         angulos[2] = 120
     if(angulos[2]<60):
         angulos[2] = 60
+
+    if(angulos[1]>170):
+        angulos[1] = 170
+    if(angulos[1]<10):
+        angulos[1] = 10
+    
+    if(angulos[0]>170):
+        angulos[0] = 170
+    if(angulos[0]<10):
+        angulos[0] = 10
     
     
 
@@ -53,7 +63,7 @@ def cordenadas(angulos, booleanos, array):
     msg = ','.join(f'{val:03d}' for val in angulos)
     msg += ',' + ','.join(map(str, booleanos))
     msg += ',' + ','.join(f'{val:03d}' for val in array)
-    print(msg)
+    # print(msg)
 
     enviar_comando(msg)
 
@@ -64,13 +74,13 @@ def range_changer(range_calibrado):
 array = [255, 255, 255]  # Array com três valores de 0 a 255
 
 
-while True:
-    booleanos = [0, 1]  # Dois valores booleanos (0 ou 1)
-    angulos = [0, 00,90, 58]  # Quatro ângulos de 0 a 180 graus
-    cordenadas(angulos, booleanos, array)
-    time.sleep(3)
-    angulos = [00, 00, 90, 85] 
-    cordenadas(angulos, [1, 0], array)
-    time.sleep(3)
+# while True:
+#     booleanos = [0, 1]  # Dois valores booleanos (0 ou 1)
+#     angulos = [0, 00,90, 58]  # Quatro ângulos de 0 a 180 graus
+#     cordenadas(angulos, booleanos, array)
+#     time.sleep(3)
+#     angulos = [00, 00, 90, 85] 
+#     cordenadas(angulos, [1, 0], array)
+#     time.sleep(3)
 
 
