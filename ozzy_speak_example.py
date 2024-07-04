@@ -10,7 +10,7 @@ angulos = [90,90,0,0]
 
 # Configurações do PyAudio
 FORMAT = pyaudio.paInt16
-CHANNELS = 1
+CHANNELS = 2
 RATE = 44100
 CHUNK = 1024
 
@@ -30,6 +30,7 @@ audio = pyaudio.PyAudio()
 # Abrir o stream de áudio
 stream = audio.open(format=FORMAT, channels=CHANNELS,
                     rate=RATE, input=True,
+                    input_device_index=4,
                     frames_per_buffer=CHUNK)
 
 while True:

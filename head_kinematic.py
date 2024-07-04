@@ -36,25 +36,25 @@ for i in range(180):
     tilt_cinematic = move_tilt(i)
     angulos[1] = tilt_cinematic[1]
     angulos[0] =  tilt_cinematic[0]
-    time.sleep(0.05)
+    time.sleep(0.01)
     print(angulos)
     cordenadas(angulos,open_eye,[0,0,0])
 
-for i in range(180):
-    tilt_cinematic = move_roll(i)
-    angulos[1] = tilt_cinematic[1]
-    angulos[0] =  tilt_cinematic[0]
-    time.sleep(0.05)
-    print(angulos)
-    cordenadas(angulos,open_eye,[0,0,0])
+# for i in range(180):
+#     tilt_cinematic = move_roll(i)
+#     angulos[1] = tilt_cinematic[1]
+#     angulos[0] =  tilt_cinematic[0]
+#     time.sleep(0.05)
+#     print(angulos)
+#     cordenadas(angulos,open_eye,[0,0,0])
 
-for i in range(180):
-    tilt_cinematic = full_Kinematic(i,i)
-    angulos[1] = tilt_cinematic[1]
-    angulos[0] =  tilt_cinematic[0]
-    time.sleep(0.05)
-    print(angulos)
-    cordenadas(angulos,open_eye,[0,0,0])
+# for i in range(180):
+#     tilt_cinematic = full_Kinematic(i,i)
+#     angulos[1] = tilt_cinematic[1]
+#     angulos[0] =  tilt_cinematic[0]
+#     time.sleep(0.05)
+#     print(angulos)
+#     cordenadas(angulos,open_eye,[0,0,0])
 
 
 
