@@ -1,0 +1,27 @@
+ sudo apt install espeak
+ pip install google-generativeai
+ pip install SpeachRecognition
+ pip install SpeechRecognition
+ pip isntall librosa
+ pip install librosa
+ pip isntall pytts3
+ pip install  pytts3
+ pip install  pyttsx3
+ pip install pydub
+ pip install azure-cognitiveservices-speech
+pip install pipwin
+pipwin install pyaudio
+pip install PyAudio
+sudo -i 
+apt-get update && apt-get install -y \
+        libportaudio2 libportaudiocpp0 portaudio19-dev \
+        python3-dev \
+        build-essential \
+        && rm -rf /var/lib/apt/lists/*
+    
+sudo add-apt-repository ppa:deadsnakes/ppa
+sudo apt-get update
+sudo apt-get install python3.11 python3.11-dev
+sudo apt-get remove libpython3.11-minimal
+sudo apt --fix-broken install
+pip install pyaudio

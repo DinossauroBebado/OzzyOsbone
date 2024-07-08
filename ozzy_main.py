@@ -3,10 +3,17 @@ import time
 import cv2
 from utils import * 
 
+import threading
 
 import pyaudio
 import numpy as np
 
+from rob_ozzy import * 
+
+
+def ozzy_mind():
+    print("run thread")
+    main()
 
 class Ozzy_manager():
     def __init__(self) -> None:
@@ -187,5 +194,7 @@ class Ozzy_manager():
 
 if __name__ == '__main__':
     ozzy = Ozzy_manager()
+    x = threading.Thread(target=ozzy_mind)
+    x.start()
 
     ozzy.ozzy_loop()
