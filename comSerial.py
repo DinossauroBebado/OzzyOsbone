@@ -2,15 +2,15 @@ import serial
 import time
 
 # # Configurar a porta serial
-# esp = serial.Serial(port='COM3', baudrate=115200, timeout=.1)
-# esp.flush()
+esp = serial.Serial(port='/dev/ttyUSB0', baudrate=115200, timeout=.1)
+esp.flush()
 
-# def enviar_comando(x):
-#     esp.write(bytes(x, "utf-8"))
-#     # time.sleep(0.1)  # Aguarda para dar tempo ao ESP32 para processar
-#     # if esp.in_waiting > 0:
-#     #     line = esp.readline().decode('utf-8').rstrip()
-#     #     print(f'Received from ESP32: {line}')
+def enviar_comando(x):
+    esp.write(bytes(x, "utf-8"))
+    # time.sleep(0.1)  # Aguarda para dar tempo ao ESP32 para processar
+    # if esp.in_waiting > 0:
+    #     line = esp.readline().decode('utf-8').rstrip()
+    #     print(f'Received from ESP32: {line}')
 
 def range_checker(range_calculo, *args):
     for i, value in enumerate(args):
@@ -65,7 +65,7 @@ def cordenadas(angulos, booleanos, array):
     msg += ',' + ','.join(f'{val:03d}' for val in array)
     print(msg)
 
-    # enviar_comando(msg)
+    enviar_comando(msg)
 
 def range_changer(range_calibrado):
     return range_calibrado
