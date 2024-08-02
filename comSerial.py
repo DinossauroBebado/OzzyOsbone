@@ -42,10 +42,10 @@ def cordenadas(angulos, booleanos, array):
     if(angulos[3]<58):
         angulos[3] = 58
 
-    if(angulos[2]>120):
-        angulos[2] = 120
-    if(angulos[2]<60):
-        angulos[2] = 60
+    # if(angulos[2]>140):
+    #     angulos[2] = 140
+    # if(angulos[2]<30):
+    #     angulos[2] = 30
 
     if(angulos[1]>170):
         angulos[1] = 170

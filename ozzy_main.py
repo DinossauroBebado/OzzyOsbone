@@ -3,25 +3,20 @@ import time
 import cv2
 from utils import * 
 
-import threading
 
 import pyaudio
 import numpy as np
 
-from rob_ozzy import * 
 
 
-def ozzy_mind():
-    print("run thread")
-    main()
 
 class Ozzy_manager():
     def __init__(self) -> None:
 
-        self.rest_pan = 90 
+        self.rest_pan = 95
         self.rest_tilt_left = 90
-        self.rest_tilt_right = 90 
-        self.close_mouth = 80 
+        self.rest_tilt_right = 110
+        self.close_mouth = 90
         self.close_eye = [0,0]
         self.open_eye = [1,1]
 
@@ -30,6 +25,7 @@ class Ozzy_manager():
         self.eye =  self.close_eye 
 
         self.face_x = self.rest_pan
+        self.face_y = self.rest_pan
 
         self.last_seen_face_time = 0  # Initialize last seen face time
 
@@ -43,8 +39,8 @@ class Ozzy_manager():
         self.min_origem = 0
         self.max_origem = 4000
 
-        self.min_destino = 0    
-        self.max_destino = 180
+        self.min_destino = 40   
+        self.max_destino = 110
         self.audio = pyaudio.PyAudio()
         self.stream = self.audio.open(format=self.FORMAT, channels=self.CHANNELS,
                     rate=self.RATE, input=True,
@@ -53,7 +49,7 @@ class Ozzy_manager():
 
         # vision variable 
         self.face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
-        self.cap = cv2.VideoCapture(2)
+        self.cap = cv2.VideoCapture(0)
 
     
 
@@ -71,7 +67,7 @@ class Ozzy_manager():
             # Persue mode 
             for (x, y, w, h) in self.faces:
 
-                self.person_detected = h*w>5000
+                self.person_detected = h*w>2700
                 cv2.putText(
                 img = self.frame,
                 text = f"{w*h}",
@@ -84,6 +80,7 @@ class Ozzy_manager():
                 if(self.person_detected):
                     cv2.rectangle(self.frame, (x, y), (x+w, y+h), (255, 0, 0), 2)
                     self.face_x_target = mapear(x, 0, self.largura, self.min_destino, self.max_destino)
+                    self.face_y_target = mapear(y, 0, self.altura, self.min_destino, self.max_destino)
                     cv2.putText(
                     img = self.frame,
                     text = "PERSUE",
@@ -94,11 +91,15 @@ class Ozzy_manager():
                     thickness = 3)
                     print("PERSUE")
                     self.face_x = move_to(self.face_x,self.face_x_target,50)
+                    self.face_y = move_to(self.face_y,self.face_y_target,50)
+                    self.rest_tilt_left = self.face_y
+                    self.rest_tilt_right = self.face_y ###problema aqui
                     # self.face_x = self.face_x_current
                     self.eye = self.open_eye
                 else:
                     cv2.rectangle(self.frame, (x, y), (x+w, y+h), (0, 255, 0), 2)
                     self.face_x_target = mapear(x, 0, self.largura, self.min_destino, self.max_destino)
+                    self.face_y_target = mapear(y, 0, self.altura, self.min_destino, self.max_destino)
          
         else:
             # Check if it's been 5 seconds since last seen face
@@ -163,7 +164,7 @@ class Ozzy_manager():
 
             self.ozzy_speak()
 
-            self.angulos = [self.rest_tilt_left,self.rest_tilt_right,self.face_x,self.mouth_porcentagem_opem]
+            self.angulos = [self.rest_tilt_left, self.rest_tilt_right, self.face_x, self.mouth_porcentagem_opem]
 
             cv2.putText(
                 img = self.frame,
@@ -194,7 +195,5 @@ class Ozzy_manager():
 
 if __name__ == '__main__':
     ozzy = Ozzy_manager()
-    x = threading.Thread(target=ozzy_mind)
-    x.start()
 
     ozzy.ozzy_loop()

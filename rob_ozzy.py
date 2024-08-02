@@ -4,14 +4,9 @@ import pyttsx3
 import os
 
 from pydub import AudioSegment, effects, playback
-import librosa
-import numpy as np
-import soundfile as sf
-from pathlib import Path
-
 import azure.cognitiveservices.speech as speechsdk
 
-#configuração genai(ia)
+# Configuração genai(ia)
 genai.configure(api_key="AIzaSyDetqlvGmCYU-hIgX6FEBCMMYW9BlM1Mcc")
 # Configurações do microsoft(fala)
 subscription_key = '2c065a8b424b4a74bc18bbbbed8d1a71'
@@ -25,14 +20,12 @@ def lower_pitch(audio, octaves=-0.25):
     new_sample_rate = int(audio.frame_rate * (2.0 ** octaves))
     return audio._spawn(audio.raw_data, overrides={'frame_rate': new_sample_rate}).set_frame_rate(44100)
 
-
 # EQ Adjustment Function
 def apply_eq(audio):
     low_pass_filtered = audio.low_pass_filter(1000)
     high_pass_filtered = low_pass_filtered.high_pass_filter(500)
     normalized_audio = effects.normalize(high_pass_filtered)
     return normalized_audio
-
 
 # Main Function to Combine All Steps
 def process_audio(input_file):
@@ -47,10 +40,6 @@ def process_audio(input_file):
         os.remove(output_path)
 
     lowered_audio.export(output_path, format="wav")
-
-    # Apply autotune using librosa
-    # apply_autotune("eq_adjusted_output.wav", output_file, target_pitch)
-
 
 def ouvir_microfone():
     # Habilita o microfone para ouvir o usuario
@@ -77,29 +66,21 @@ def ouvir_microfone():
             print("Erro ao se conectar ao serviço do Google; {0}".format(e))
             return ""
 
-
 def main():
     assistente_falante = True
 
-
-    # for m in genai.list_models():
-    #     if 'generateContent' in m.supported_generation_methods:
-    #         print(m.name)
-
     model = genai.GenerativeModel('gemini-1.5-flash')
-    initial_history = [
-        {"role": "system",
-         "content": "Você é o Ozzyosbone uma caveira perdida do parque barigui, um vale perdido das capivaras, tem uma personalidade ríspida, informal e meio debochada, mas tem várias histórias pra contar. Agora vc está na RCX uma competição de robótica na campus party em são Paulo, faça piadas sobre a poluição de sao Paulo e a chance de ser roubado, além disso vc odeia rampas e nao usa nenhum emjoi, somente palavras. Por favor, fale comigo usando esse contexto."}
-    ]
-    chat = model.start_chat(history=initial_history)
-  
+    chat = model.start_chat(history=[])
 
-    ### configura voz
+    # Configura o contexto inicial para o assistente
+    chat.send_message("Sempre que falar comigo, lembre-se você é o Ozzyosbone uma caveira perdida do parque barigui, um vale perdido das capivaras, tem uma personalidade ríspida, informal e meio debochada, mas tem várias histórias pra contar. Agora vc está na RCX uma competição de robótica na campus party em são Paulo, faça piadas sobre a poluição de sao Paulo e a chance de ser roubado, além disso vc odeia rampas e nao usa nenhum emjoi, somente palavras. Por favor, fale comigo usando esse contexto.")
+
+    ### Configura voz
     if assistente_falante:
         engine = pyttsx3.init()
 
         voices = engine.getProperty('voices')
-        engine.setProperty('rate', 200)  # velocidade 120 = lento
+        engine.setProperty('rate', 200)  # Velocidade 200
 
         voz = 0
         engine.setProperty('voice', voices[voz].id)
@@ -138,12 +119,10 @@ def main():
                 # Síntese de fala e salvamento em arquivo
                 result = speech_synthesizer.speak_text_async(response.text).get()
 
-
                 process_audio(audio_file)
 
                 # Tocar o arquivo output.wav
-                output_audio = AudioSegment.from_file("C:/Users/henri/PycharmProjects/pythonProject2/.venv/output.wav",
-                                                      format="wav")
+                output_audio = AudioSegment.from_file("C:/Users/henri/PycharmProjects/pythonProject2/.venv/output.wav", format="wav")
                 playback.play(output_audio)
 
             except Exception as e:
@@ -153,5 +132,5 @@ def main():
     print("Encerrando Chat")
 
 
-if __name__ == '__main__':
-    main()
+print("main")
+main()

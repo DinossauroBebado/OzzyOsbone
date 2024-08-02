@@ -3,13 +3,13 @@ import time
 from comSerial import * 
 from utils import * 
 open_eye = [1,1]
-angulos = [90,90,90,0]
+angulos = [10,90,90,10]
 
 def move_tilt(pos):
     tilt_motor_cinematic = []
     pos = saturate(pos,180,0)
-    left_motor = 180 - pos 
-    right_motor = 0 + pos 
+    left_motor = 180 - pos + 0
+    right_motor = 0 + pos - 0
     tilt_motor_cinematic = [left_motor,right_motor]
     return tilt_motor_cinematic
 
@@ -39,37 +39,51 @@ def full_mouth(pos):
     angulos[3] = pos
     return angulos
 
+while True:
+    for i in range(180):
+        tilt_cinematic = move_tilt(i)
+        angulos[2] = i
+        time.sleep(0.1)
+        print(angulos)
+        cordenadas(angulos,open_eye,[0,0,0])
 
-for i in range(180):
-    tilt_cinematic = move_tilt(i)
-    angulos[1] = tilt_cinematic[1]
-    angulos[0] =  tilt_cinematic[0]
-    time.sleep(0.01)
-    print(angulos)
+    for i in range(180):
+        tilt_cinematic = move_tilt(i)
+        angulos[1] = tilt_cinematic[1]
+        angulos[0] =  tilt_cinematic[0]
+        time.sleep(0.01)
+        print(angulos)
+        cordenadas(angulos,open_eye,[0,0,0])
+
+    for i in range(180):
+        tilt_cinematic = move_roll(i)
+        angulos[1] = tilt_cinematic[1]
+        angulos[0] =  tilt_cinematic[0]
+        time.sleep(0.05)
+        print(angulos)
+        cordenadas(angulos,open_eye,[0,0,0])
+
+    for i in range(180):
+        tilt_cinematic = full_Kinematic(i,i)
+        angulos[1] = tilt_cinematic[1]
+        angulos[0] =  tilt_cinematic[0]
+        time.sleep(0.05)
+        print(angulos)
+        cordenadas(angulos,open_eye,[0,0,0])
+
+    for i in range(180):
+        mouth = full_mouth(i)
+        print(angulos)
+        cordenadas(angulos,open_eye,[0,0,0])
+        time.sleep(0.05)
+
+
+
+while True:
+    for i in range(180):
+        angulos[2] = i 
     cordenadas(angulos,open_eye,[0,0,0])
 
-for i in range(180):
-    tilt_cinematic = move_roll(i)
-    angulos[1] = tilt_cinematic[1]
-    angulos[0] =  tilt_cinematic[0]
-    time.sleep(0.05)
-    print(angulos)
-    cordenadas(angulos,open_eye,[0,0,0])
-
-for i in range(180):
-    tilt_cinematic = full_Kinematic(i,i)
-    angulos[1] = tilt_cinematic[1]
-    angulos[0] =  tilt_cinematic[0]
-    time.sleep(0.05)
-    print(angulos)
-    cordenadas(angulos,open_eye,[0,0,0])
-
-for i in range(180):
-    mouth = full_mouth(i)
-    print(angulos)
-    cordenadas(angulos,open_eye,[0,0,0])
-    time.sleep(0.05)
-    
 
 
 

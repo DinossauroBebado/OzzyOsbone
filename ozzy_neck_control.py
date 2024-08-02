@@ -99,12 +99,12 @@ while True:
             #add filter or timeout only go to sleep after some time 
             resultado = mapear(x, min_origem, max_origem, min_destino, max_destino)
             booleanos = [1,1]
-            angulos = [90,90,int(resultado),0]
+            angulos = [90,90,int(resultado),40]
     else:
         #add desaceleration 
         resultado = 90
         booleanos = [0,0]
-        angulos = [0,180,resultado,0]
+        angulos = [0,180,int(resultado),0]
 
     # Mostrar o frame com as faces detectadas
     cv2.imshow('Reconhecimento de Faces', frame)
