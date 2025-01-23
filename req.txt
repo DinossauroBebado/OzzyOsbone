@@ -25,3 +25,4 @@ sudo apt-get install python3.11 python3.11-dev
 sudo apt-get remove libpython3.11-minimal
 sudo apt --fix-broken install
 pip install pyaudio
+pip install mediapipe
