@@ -2,11 +2,14 @@ import google.generativeai as genai
 import speech_recognition as sr
 import pyttsx3
 import os
+from prompt import *
 
 from pydub import AudioSegment, effects, playback
 import azure.cognitiveservices.speech as speechsdk
 
 from pydub.utils import which
+
+
 
 AudioSegment.converter = which("ffmpeg")
 AudioSegment.ffprobe = which("ffprobe")
@@ -56,10 +59,15 @@ def process_audio(input_file):
 
 def ouvir_microfone():
     microfone = sr.Recognizer()
+    print("Iniciando captação de áudio")
+    
     with sr.Microphone() as source:
-        microfone.adjust_for_ambient_noise(source)
+        microfone.adjust_for_ambient_noise(source)  # Ajusta para ruídos ambientes
         print("Diga alguma coisa: ")
-        audio = microfone.listen(source)
+
+        # Usando phrase_time_limit para ouvir por no máximo 3 segundos
+        audio = microfone.listen(source, phrase_time_limit=3)
+
         try:
             frase = microfone.recognize_google(audio, language='pt-BR')
             print("Você disse: " + frase)
@@ -70,6 +78,7 @@ def ouvir_microfone():
         except sr.RequestError as e:
             print("Erro ao se conectar ao serviço do Google; {0}".format(e))
             return ""
+
 
 def create_empty_wav_file(file_path):
     # Cria um arquivo WAV vazio se ele não existir
@@ -86,7 +95,9 @@ def main():
             print(m.name)
 
     model = genai.GenerativeModel('gemini-1.5-flash')
-    chat = model.start_chat(history=[])
+
+    chat = model.start_chat(history=[] )
+    
 
     if assistente_falante:
         engine = pyttsx3.init()
@@ -98,10 +109,15 @@ def main():
     bem_vindo = "# Bem Vindo ao Assistente Mil Grau com Gemini AI #"
     print("\n" + len(bem_vindo) * "#" + "\n" + bem_vindo + "\n" + len(bem_vindo) * "#")
     print("###   Digite 'desligar' para encerrar    ###\n")
-
+    cont = 0
     while True:
         try:
-            texto = ouvir_microfone()
+            if cont == 0:
+                texto = "Você é uma caveira chamada Ozzy Osbourne, flutuando dentro de uma caixa de vidro e madeira, parte de uma exposição de museu. Sua missão é interagir com o público da competição 'Copa Pinhão' na categoria ArtBot, e convencer as pessoas a votar em você como o 'Ozzy Osbourne da 309'. Você tem uma personalidade excêntrica, espirituosa, e um pouco sarcástica, mas sempre educado e direto. Suas respostas devem ser breves, divertidas e interessantes. Use seu charme para cativar o público e olhe para quem estiver falando com você. Lembre-se de sempre pedir votos de forma criativa e envolvente."
+                
+            else:
+                texto = ouvir_microfone()
+
         except Exception as e:
             print(f"Erro ao capturar ou reconhecer áudio: {e}")
             continue
@@ -109,8 +125,9 @@ def main():
         if texto.lower() == "desligar":
             break
 
-        if texto:
+        if "ozzy" in texto.lower() or "oz" in texto.lower() or "Hoje" in texto.lower() or "hoje" in texto.lower() or "rose" in texto.lower() or "Rose" in texto.lower() or "11" in texto.lower() or "Rose" in texto.lower() or "osi" in texto.lower() or "ozzi" in texto.lower() or "ozi" in texto.lower() or "rosa" in texto.lower() or "Ozzi" in texto.lower():
             try:
+                
                 response = chat.send_message(texto)
                 print("Gemini:", response.text, "\n")
 
@@ -127,13 +144,15 @@ def main():
                     raise FileNotFoundError(f"O arquivo de áudio não foi criado: {audio_file}")
 
                 process_audio(audio_file)
+                if cont == 0:
+                    cont += 1
+                else:
+                    output_audio_path = "output.wav"
+                    create_empty_wav_file(output_audio_path)
 
-                output_audio_path = "output.wav"
-                create_empty_wav_file(output_audio_path)
-
-                # Tocar o arquivo output.wav
-                output_audio = AudioSegment.from_file(output_audio_path, format="wav")
-                playback.play(output_audio)
+                    # Tocar o arquivo output.wav
+                    output_audio = AudioSegment.from_file(output_audio_path, format="wav")
+                    playback.play(output_audio)
 
             except Exception as e:
                 print(f"Erro ao processar resposta do assistente: {e}")
@@ -143,3 +162,6 @@ def main():
 
 if __name__ == '__main__':
     main()
+
+
+    
